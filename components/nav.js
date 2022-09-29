@@ -16,7 +16,7 @@ export default function Nav() {
         style={{ height: "6vh", overflow: "hidden" }}
       >
         <li className="text-shine text-popin">
-          <Link href="/">youtube-dl-web</Link>
+          <Link href="/">ytdlp-web</Link>
         </li>
         <ul className="flex items-center justify-between space-x-4">
           {links.map(({ href, label }) => (
