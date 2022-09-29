@@ -32,4 +32,8 @@ async def get_info(query: str, format: str = DEFAULT_FORMAT):
 
 @app.get("/api/version", status_code=status.HTTP_200_OK)
 async def get_version():
-    return PlainTextResponse(yt_dlp.version.__version__)
+      return JSONResponse({
+            "wrapper": yt_dlp.version.__version__,
+            "variant": yt_dlp.version.VARIANT,
+            "git_hash": yt_dlp.version.RELEASE_GIT_HEAD
+      })
