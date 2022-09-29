@@ -13,7 +13,7 @@ const handler = async (req, res) => {
     try {
       const { origin } = absoluteUrl(req);
       const data = await fetch(
-        `${origin}/api/info?${queryString.stringify({ f, q: url })}`
+        `${origin}/api/info?${queryString.stringify({ format: f, query: url })}`
       );
       if (data.status !== 200) {
         return res.status(400).send(await data.text());
