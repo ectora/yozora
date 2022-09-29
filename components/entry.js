@@ -1,3 +1,4 @@
+import absoluteUrl from "next-absolute-url";
 import prettyMilliseconds from "pretty-ms";
 import queryString from "query-string";
 import { useState } from "react";
@@ -112,7 +113,7 @@ export default function Entry({ data, origin }) {
               <a
                 key={f.id}
                 href={`${origin}/api/download?${queryString.stringify({
-                  f: f.id,
+                  format: f.id,
                   url: data.webpage_url,
                 })}`}
               >
