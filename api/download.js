@@ -11,9 +11,10 @@ const handler = async (req, res) => {
   } = req;
   if (url) {
     try {
+      console.log('url: %s | format: %s', url, f)
       const { origin } = absoluteUrl(req);
       const data = await fetch(
-        `${origin}/api/info?${queryString.stringify({ format: f, query: url })}`
+        `${origin}/api/info?query=${url}&format=${f}`
       );
       if (data.status !== 200) {
         return res.status(400).send(await data.text());
