@@ -20,7 +20,7 @@ export default function IndexPage({ origin }) {
         }`}
       >
         <h1 className="mb-2 text-2xl font-semibold pointer-events-none text-shine">
-          a minimal web ui and serverless api for youtube-dl
+          a minimal web ui and serverless api for yt-dlp
         </h1>
         <span className="text-sm font-bold xl:text-base">
           to download -{" "}
