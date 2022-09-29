@@ -57,7 +57,6 @@ const handler = async (req, res) => {
     } catch (error) {
       return res.status(400).send(`Error: ${error.stderr || error.msg}`);
     }
-    return res.status(200).send(url);
   } else {
     return res.status(400).send("\"url\" parameter required.");
   }
