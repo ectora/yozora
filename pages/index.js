@@ -34,9 +34,9 @@ export default function IndexPage({ origin }) {
               format - format as per{" "}
               <a
                 className="font-bold"
-                href="https://github.com/ytdl-org/youtube-dl/blob/master/README.md#format-selection"
+                href="https://github.com/yt-dlp/yt-dlp/blob/master/README.md#format-selection"
               >
-                youtube-dl format
+                yt-dlp format
               </a>{" "}
               {`(default: ${INIT_FORM.format})`}
             </li>
@@ -54,9 +54,9 @@ export default function IndexPage({ origin }) {
               format - format as per{" "}
               <a
                 className="font-bold"
-                href="https://github.com/ytdl-org/youtube-dl/blob/master/README.md#format-selection"
+                href="https://github.com/yt-dlp/yt-dlp/blob/master/README.md#format-selection"
               >
-                youtube-dl format
+                yt-dlp format
               </a>{" "}
               {`(default: ${INIT_FORM.format})`}
             </li>
@@ -97,7 +97,7 @@ export default function IndexPage({ origin }) {
           className={` w-full text-xl xl:text-5xl placeholder-current bg-transparent appearance-none ${
             iFocused ? "text-shine" : "text-shine-mono"
           }`}
-          placeholder="click here to enter url or search query"
+          placeholder="click here to enter URK or search query"
           autoComplete="off"
           value={formData.query}
         />

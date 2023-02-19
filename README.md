@@ -17,7 +17,7 @@ Deploy the example using [Vercel](https://vercel.com):
 #### parameters
 
 - `url` - url to the media, no playlists (required)
-- `f` - format as per youtube-dl format (default: bestvideo+bestaudio/best)
+- `format` - format as per youtube-dl format (default: bestvideo+bestaudio/best)
 
 ### To get info
 
@@ -25,5 +25,5 @@ Deploy the example using [Vercel](https://vercel.com):
 
 #### parameters
 
-- `q` - search query or url (required)
-- `f` - format as per youtube-dl format (default: bestvideo+bestaudio/best)
+- `query` - search query or url (required)
+- `format` - format as per youtube-dl format (default: bestvideo+bestaudio/best)
