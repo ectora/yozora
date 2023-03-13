@@ -1,5 +1,4 @@
 import yt_dlp;
-import uvicorn;
 from starlette.responses import JSONResponse;
 from fastapi.responses import PlainTextResponse;
 from fastapi import FastAPI, HTTPException, status;
