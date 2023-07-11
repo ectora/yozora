@@ -97,7 +97,7 @@ export default function IndexPage({ origin }) {
           className={` w-full text-xl xl:text-5xl placeholder-current bg-transparent appearance-none ${
             iFocused ? "text-shine" : "text-shine-mono"
           }`}
-          placeholder="click here to enter URK or search query"
+          placeholder="click here to enter URL or search query"
           autoComplete="off"
           value={formData.query}
         />
