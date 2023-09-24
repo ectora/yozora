@@ -1,12 +1,13 @@
 # youtube-dl-web
 
-a minimal web ui and serverless api for [youtube-dl](https://github.com/ytdl-org/youtube-dl).
+a minimal web ui and serverless api for [youtube-dl](https://github.com/ytdl-org/youtube-dl). \
+a clone of [this repository](https://github.com/saanuregh/youtube-dl-web)
 
 ## Deploy your own
 
 Deploy the example using [Vercel](https://vercel.com):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/saanuregh/youtube-dl-web)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/ectora/yozora)
 
 ## How to use the serverless API
 
