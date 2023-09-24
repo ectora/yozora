@@ -3,6 +3,9 @@
 a minimal web ui and serverless api for [youtube-dl](https://github.com/ytdl-org/youtube-dl). \
 a clone of [this repository](https://github.com/saanuregh/youtube-dl-web)
 
+> [!WARNING]  
+> This repository currently support the use of NodeJS 16.x and may not build correctly on later versions.
+
 ## Deploy your own
 
 Deploy the example using [Vercel](https://vercel.com):
