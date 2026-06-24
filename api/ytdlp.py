@@ -3,7 +3,7 @@ import re
 import httpx
 import yt_dlp
 from fastapi import FastAPI, HTTPException, status
-from fastapi.responses import PlainTextResponse, JSONResponse, RedirectResponse, Response
+from fastapi.responses import PlainTextResponse, JSONResponse, RedirectResponse
 from pydantic import ValidationError as RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -86,7 +86,7 @@ def build_yt_dlp_opts(video_id: str, format_str: str, po_token: str | None = Non
         "extractor_args": extractor_args,
     }
 
-@app.get("/api/info", status_code=status.HTTP_200_OK)
+@app.get("/info", status_code=status.HTTP_200_OK)
 async def get_info(query: str, format: str = DEFAULT_FORMAT):
     # Extract video ID from URL or raw ID
     video_id = None
@@ -131,7 +131,7 @@ async def get_info(query: str, format: str = DEFAULT_FORMAT):
             headers={"Cache-Control": "no-store, max-age=0"},
         )
 
-@app.get("/api/download")
+@app.get("/download")
 async def download(
     format: str = DEFAULT_FORMAT,
     url: str = None,
@@ -205,9 +205,9 @@ async def download(
                 detail=f"No stream URL found for format '{format}'",
             )
 
-        return Response(
-            status_code=302,
-            headers={"Location": stream_url},
+        return RedirectResponse(
+            url=stream_url,
+            status_code=status.HTTP_302_FOUND,
         )
 
     except yt_dlp.utils.DownloadError as exc:
@@ -224,7 +224,7 @@ async def download(
             detail=repr(exc),
         )
 
-@app.get("/api/version", status_code=status.HTTP_200_OK)
+@app.get("/version", status_code=status.HTTP_200_OK)
 async def get_version():
     return JSONResponse(
         {
@@ -233,3 +233,6 @@ async def get_version():
             "git_hash": getattr(yt_dlp.version, "RELEASE_GIT_HEAD", None),
         }
     )
+
+# Export ASGI app for Vercel
+asgi_app = app
