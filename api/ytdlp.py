@@ -2,8 +2,9 @@ import os
 import re
 import httpx
 import yt_dlp
-from fastapi import HTTPException, status
-from fastapi.responses import RedirectResponse, Response
+from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import PlainTextResponse, JSONResponse, RedirectResponse, Response
+from pydantic import ValidationError as RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 DEFAULT_FORMAT = "bestvideo+bestaudio/best"
