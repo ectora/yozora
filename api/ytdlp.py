@@ -2,9 +2,8 @@ import os
 import re
 import httpx
 import yt_dlp
-from fastapi import FastAPI, HTTPException, status
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
+from fastapi import HTTPException, status
+from fastapi.responses import RedirectResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 DEFAULT_FORMAT = "bestvideo+bestaudio/best"
@@ -132,39 +131,97 @@ async def get_info(query: str, format: str = DEFAULT_FORMAT):
         )
 
 @app.get("/api/download")
-async def download(query: str, format: str = "bestvideo+bestaudio/best"):
+async def download(
+    format: str = DEFAULT_FORMAT,
+    url: str = None,
+):
+    if not url:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing url parameter",
+        )
 
-    ydl_opts = build_yt_dlp_opts(
-        video_id="unknown",
-        format_str=format,
-    )
+    try:
+        # Extract video ID if possible
+        video_id = None
+        match = re.search(r"(?:v=|/)([a-zA-Z0-9_-]{11})", url)
+        if match:
+            video_id = match.group(1)
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(query, download=False)
+        # Fetch PO token only for YouTube URLs
+        po_token = None
+        visitor_data = None
 
-    video_url = info.get("url")
+        if "youtube.com" in url or "youtu.be" in url:
+            po_token, visitor_data = await fetch_po_token(
+                video_id or "unknown",
+                client="web",
+                context="gvs",
+            )
 
-    if not video_url:
-        raise HTTPException(400, "No stream URL found")
+        ydl_opts = build_yt_dlp_opts(
+            video_id=video_id or "unknown",
+            format_str=format,
+            po_token=po_token,
+            visitor_data=visitor_data,
+        )
 
-    proc = subprocess.Popen(
-        [
-            "yt-dlp",
-            query,
-            "-f",
-            format,
-            "--merge-output-format",
-            "mp4",
-            "-o",
-            "-",
-        ],
-        stdout=subprocess.PIPE,
-    )
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
 
-    return StreamingResponse(
-        proc.stdout,
-        media_type="video/mp4"
-    )
+        formats = info.get("formats", [])
+
+        # Exact format match
+        selected = next(
+            (
+                f
+                for f in formats
+                if str(f.get("format_id")) == str(format)
+            ),
+            None,
+        )
+
+        # Handle merged formats such as 137+140
+        if not selected and "+" in format:
+            selected = next(
+                (
+                    f
+                    for f in formats
+                    if str(f.get("format_id")) == format.split("+")[0]
+                ),
+                None,
+            )
+
+        # Fallback to best format
+        if not selected:
+            selected = info
+
+        stream_url = selected.get("url")
+
+        if not stream_url:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"No stream URL found for format '{format}'",
+            )
+
+        return RedirectResponse(
+            url=stream_url,
+            status_code=302,
+        )
+
+    except yt_dlp.utils.DownloadError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
+
+    except Exception as exc:
+        print(f"[DOWNLOAD ERROR] {repr(exc)}")
+
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=repr(exc),
+        )
 
 @app.get("/api/version", status_code=status.HTTP_200_OK)
 async def get_version():
