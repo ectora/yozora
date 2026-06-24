@@ -4,7 +4,7 @@ import httpx
 import yt_dlp
 from fastapi import FastAPI, HTTPException, status
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 DEFAULT_FORMAT = "bestvideo+bestaudio/best"
@@ -131,6 +131,40 @@ async def get_info(query: str, format: str = DEFAULT_FORMAT):
             headers={"Cache-Control": "no-store, max-age=0"},
         )
 
+@app.get("/api/download")
+async def download(query: str, format: str = "bestvideo+bestaudio/best"):
+
+    ydl_opts = build_yt_dlp_opts(
+        video_id="unknown",
+        format_str=format,
+    )
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(query, download=False)
+
+    video_url = info.get("url")
+
+    if not video_url:
+        raise HTTPException(400, "No stream URL found")
+
+    proc = subprocess.Popen(
+        [
+            "yt-dlp",
+            query,
+            "-f",
+            format,
+            "--merge-output-format",
+            "mp4",
+            "-o",
+            "-",
+        ],
+        stdout=subprocess.PIPE,
+    )
+
+    return StreamingResponse(
+        proc.stdout,
+        media_type="video/mp4"
+    )
 
 @app.get("/api/version", status_code=status.HTTP_200_OK)
 async def get_version():
