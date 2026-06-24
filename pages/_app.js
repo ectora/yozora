@@ -5,9 +5,9 @@ import NProgress from "nprogress";
 import Nav from "../components/nav";
 import "../styles/index.css";
 
-Router.events.on("routeChangeStart", () => {
-  NProgress.start();
-});
+NProgress.configure({ showSpinner: false });
+
+Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
@@ -15,12 +15,23 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>ytdlp-web</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <title>yozora — a minimal web UI for yt-dlp</title>
+        <meta
+          name="description"
+          content="yozora is a minimal, responsive web UI and serverless API for yt-dlp. Fetch info and download media from hundreds of sites."
+        />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <meta name="theme-color" content="#060912" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col min-w-full min-h-screen bg-bunker-800">
+      <div className="flex min-h-dvh flex-col bg-background">
         <Nav />
-        <Component {...pageProps} />
+        <main className="flex flex-1 flex-col">
+          <Component {...pageProps} />
+        </main>
       </div>
     </>
   );
