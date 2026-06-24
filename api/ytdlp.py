@@ -3,7 +3,7 @@ import re
 import httpx
 import yt_dlp
 from fastapi import HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 DEFAULT_FORMAT = "bestvideo+bestaudio/best"
@@ -204,9 +204,9 @@ async def download(
                 detail=f"No stream URL found for format '{format}'",
             )
 
-        return RedirectResponse(
-            url=stream_url,
+        return Response(
             status_code=302,
+            headers={"Location": stream_url},
         )
 
     except yt_dlp.utils.DownloadError as exc:
