@@ -168,7 +168,7 @@ export default function IndexPage({ origin }) {
         </p>
       </section>
 
-      <footer className="mt-auto border-t border-border pt-8 text-center text-sm text-muted">
+      <footer className="mt-8 border-t border-border pt-8 text-center text-sm text-muted">
         Built by{" "}
         <a
           href="https://github.com/aarhuuus"
