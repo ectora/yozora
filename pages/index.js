@@ -167,6 +167,27 @@ export default function IndexPage({ origin }) {
           syntax.
         </p>
       </section>
+
+      <footer className="mt-auto border-t border-border pt-8 text-center text-sm text-muted">
+        Built by{" "}
+        <a
+          href="https://github.com/aarhuuus"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="font-medium text-accent hover:underline"
+        >
+          Chester
+        </a>
+        {" | "}
+        <a
+          href="https://github.com/ectora/yozora"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="font-medium text-accent hover:underline"
+        >
+          yozora
+        </a>
+      </footer>
     </div>
   );
 }
