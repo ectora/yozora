@@ -10,12 +10,11 @@
   },
   "dependencies": {
     "content-disposition": "^0.5.4",
-    "ffmpeg-static": "^5.2.0",
-    "next": "^16.2.9",
+    "next": "^16.4.5",
     "nprogress": "^0.2.0",
     "pretty-ms": "^9.2.0",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react": "^19.2.9",
+    "react-dom": "^19.2.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.1",
